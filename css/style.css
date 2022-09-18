@@ -166,7 +166,7 @@ p .bottom{
 	margin-bottom: 10px;
 }
 /* 图1 */
-.chart1 video{
+.chart1 img{
 	width: 80%;
 	margin-left: 10%;
 }
@@ -404,6 +404,15 @@ margin-left: 10%;
 	padding: 540px 0;
 	height: 1080px;
 
+}
+.chart13{
+	height: 450px;
+	margin: 5% 10%;
+	width: 80%;
+	background: url("../images/picture.jpg");
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
 }
 .footer {
 	background-color: #333;
