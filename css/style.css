@@ -10,6 +10,10 @@
 	font-family: 'font3';
 	src: url("../fonts/STXINGKA.TTF");
 }
+@font-face{
+	font-family: 'font4';
+	src: url("../fonts/庞门正道粗书体-正式版.ttf");
+}
 *{
 	margin: 0;
 	padding: 0;
@@ -105,7 +109,7 @@ img {
 	height: 1080px;
     position: relative;
     background-color: #EEE;
-	background-image: url("../images/cover-2.jpg");
+	background-image: url("../images/cover1.png");
 	background-repeat: no-repeat;
 	background-attachment: fixed;
 	border-top: 3px solid #EEE;
@@ -117,12 +121,12 @@ img {
 }
 .part1-img h1,.part2-img h1,.part3-img h1,.part4-img h1{
 	text-align: center;
-	color: white;
-	font-size: 120px;
-	font-weight: 900;
-	font-family: 'font1';
-	letter-spacing: 40px;
-	text-shadow: 0 0 10px rgb(9, 202, 128);
+	color: rgba(255,255,255,1);
+	font-size:150px;
+	font-weight: 600;
+	font-family: 'font4';
+	letter-spacing: 20px;
+	text-shadow: 6px 6px 1px rgba(174,199,223,0.34);
 	
 }
 .part1-content, .part2-content,.part3-content,.part4-content {
@@ -182,7 +186,7 @@ p .bottom{
 	float: left;
 }
 .part2-img{
-	background: url("../images/cover-1.jpg");
+	background: url("../images/cover2.png");
 	background-repeat: no-repeat;
 	background-attachment: fixed; 
 	background-position: center;
@@ -327,7 +331,7 @@ figure.effect-julia:hover p {
 	transform: translate3d(0,0,0);
 }
 .part3-img{
-	background: url("../images/cover-1.jpg");
+	background: url("../images/cover3.gif");
 	background-repeat: no-repeat;
 	background-attachment: fixed; 
 	background-position: center;
@@ -339,7 +343,7 @@ figure.effect-julia:hover p {
 
 }
 /* 图10*/
-.chart10 img{
+/*.chart10 img{
 	margin-left:10%;
 	width: 80%;
 }
@@ -347,7 +351,7 @@ figure.effect-julia:hover p {
 	margin-top: -5%;
 }
 .part3-chart {
-	background: url("../images/cover-2.jpg"); /*要改*/
+	background: url("../images/cover4.jpg"); 
 	background-repeat: no-repeat;
 	background-attachment: fixed;
 	background-position: center;
@@ -356,7 +360,7 @@ figure.effect-julia:hover p {
 	width: 60%;
 	margin: 0 auto;
 }
-/*-- Progress-Bar --*/
+//-- Progress-Bar 
 #about-us .lead {
 	font-size: 16px;
 	font-weight: 800;
@@ -392,9 +396,9 @@ margin-left: 10%;
 .progress .progress-bar.six-sec-ease-in-out {
 	-webkit-transition: width 2s ease-in-out;
 	transition: width 2s ease-in-out;
-}
+}*/
 .part4-img{
-	background: url("../images/cover-1.jpg");
+	background: url("../images/cover4.png");
 	background-repeat: no-repeat;
 	background-attachment: fixed; 
 	background-position: center;
