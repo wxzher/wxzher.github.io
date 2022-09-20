@@ -99,7 +99,7 @@ Highcharts.ajax({
                     positioner: function () {
                         return {
                             // right aligned
-                            x: this.chart.chartWidth - this.label.width - 20,
+                            x: this.chart.chartWidth - this.label.width - 25,
                             y: 10, // align to title
                         };
                     },

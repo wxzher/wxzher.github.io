@@ -39,7 +39,7 @@ var option = {
     top: "50%",
     left: "10%",
     min: 10,
-    max: 100000,
+    max: 300000,
     text: ["High", "Low"],
     realtime: false, //拖拽时，是否实时更新
     calculable: true, //是否显示拖拽用的手柄

@@ -343,13 +343,14 @@ figure.effect-julia:hover p {
 
 }
 /* 图10*/
-/*.chart10 img{
+chart10 img{
 	margin-left:10%;
 	width: 80%;
 }
 #lowcarbon{
 	margin-top: -5%;
 }
+/*
 .part3-chart {
 	background: url("../images/cover4.jpg"); 
 	background-repeat: no-repeat;
