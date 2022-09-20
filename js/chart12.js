@@ -252,7 +252,7 @@ var option_chart12 = {
 
     },
     {
-        text: "数据来源:",
+        text: "数据来源:《能源发展“十二五”规划》",
         x: "center",
         y: "50",
         textStyle: {

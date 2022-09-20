@@ -307,7 +307,7 @@ var option_chart14 = {
             },
         },
         {
-            text: "数据来源:",
+            text: "数据来源:《2020年中国新能源汽车行业白皮书》",
             x: "center",
             y: "50",
             textStyle: {

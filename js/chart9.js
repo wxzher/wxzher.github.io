@@ -10,7 +10,7 @@ var option = {
   },
   title: [{
     //标题样式
-    text: "第九次森林清查中国森林分布",
+    text: "中国各省森林面积",
     x: "center",
     y: "top",
     textStyle: {
