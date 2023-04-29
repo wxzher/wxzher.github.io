@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>数据总览</title>
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="head clearfix">
+      <h1 class="pulll_left">“双碳”：C位出道的今天！</h1>
+      <div class="menu menu2 pulll_left">
+        <ul>
+          <li><a href="../DataBrowsing/China/China.html">中国</a></li>
+          <li><a href="../index.html">首页</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mainbox">
+      <ul class="clearfix nav1">
+        <li style="width: 33%">
+          <div class="box">
+            <div class="tit">全球国家碳排量前十名（2019-2022）</div>
+            <p>
+              <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;单位：mt
+            </p>
+            <div class="boxnav" style="height: 300">
+              <div class="" style="height: 775px" id="world_sort"></div>
+            </div>
+          </div>
+        </li>
+
+        <li style="width: 45%">
+          <div class="box">
+            <div class="tit">全球各国家的碳排放量（2019）</div>
+            <!--2019-->
+            <div
+              class="boxnav mapc"
+              style="height: 815px; position: relative; background-color: black"
+            >
+              <div class="map" id="map"></div>
+            </div>
+          </div>
+        </li>
+
+        <li style="width: 22%">
+          <div class="box">
+            <div class="tit">每十年全球碳排放量趋势图</div>
+            <div class="boxnav" id="carbon_world" style="height: 200px"></div>
+          </div>
+          <div class="box">
+            <div class="tit">全球各地区碳排放量占比（2021）</div>
+            <!--2021-->
+            <div class="boxnav" style="height: 250px" id="area"></div>
+          </div>
+          <div class="box">
+            <div class="tit">全球碳排放来源占比</div>
+            <!--2020年-->
+            <div class="boxnav" style="height: 250px" id="source_world"></div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <script src="js/highcharts.js"></script>
+    <script src="js/highcharts-more.js"></script>
+    <script src="js/exporting.js"></script>
+    <script type="text/javascript" src="js/world.js"></script>
+    <!--每十年全球碳排放量趋势图-->
+    <script type="text/javascript" src="js/echarts.min.js"></script>
+    <script type="text/javascript" src="js/carbon_world.js"></script>
+    <!--碳排前十-->
+    <script type="text/javascript" src="js/world_sort.js"></script>
+    <!--area-->
+    <script type="text/javascript" src="js/area.js"></script>
+    <!--source_world-->
+    <script type="text/javascript" src="js/source_world.js"></script>
+  </body>
+</html>
