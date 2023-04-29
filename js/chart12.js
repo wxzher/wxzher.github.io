@@ -284,4 +284,5 @@ var option_chart12 = {
         }
     ],
 };
+
 chart_chart12.setOption(option_chart12);

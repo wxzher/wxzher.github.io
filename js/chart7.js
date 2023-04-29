@@ -2,9 +2,8 @@ Highcharts.chart("chart7", {
     chart: {
         type: "packedbubble",
         height: "100%",
-
     },
-    title: " ",
+
 
 
     tooltip: {

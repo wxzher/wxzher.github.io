@@ -318,5 +318,4 @@ var option_chart14 = {
     ],
 };
 chart_chart14.setOption(
-    option_chart14
-);
+    option_chart14);

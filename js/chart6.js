@@ -1,3 +1,4 @@
+
 var chart_chart6 = echarts.init(
   document.getElementById("chart6"),
   "white",
