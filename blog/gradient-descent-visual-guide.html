@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gradient Descent Demystified: A Visual Guide — Xiaozhen Wu</title>
+    <link rel="stylesheet" href="../assets/css/simple.css">
+</head>
+<body>
+    <div class="center">
+        <h1><a href="../" style="color:inherit;text-decoration:none;">Xiaozhen Wu</a></h1>
+    </div>
+
+    <ul class="links">
+        <li><a href="../">[Home]</a></li>
+        <li><a href="./">[Blog]</a></li>
+        <li><a href="mailto:wxzher@outlook.com">[Email]</a></li>
+    </ul>
+
+    <hr>
+
+    <div class="post-header">
+        <h2>Gradient Descent Demystified: A Visual Guide</h2>
+        <span class="post-date">2026-06-15</span>
+    </div>
+
+    <div class="post-body">
+
+        <p>Gradient descent is the workhorse of modern optimization. Whether you're training a neural network or fitting a logistic regression, you're almost certainly using some variant of it. This post walks through the key ideas, with code.</p>
+
+        <h2>What is Gradient Descent?</h2>
+
+        <p>Given a function <em>f(x)</em>, we want to find the <em>x</em> that minimizes it. The gradient &nabla;<em>f</em> points in the direction of steepest <em>ascent</em>, so we move in the <em>opposite</em> direction:</p>
+
+        <pre><code>x_{k+1} = x_k - &alpha; &nabla;f(x_k)</code></pre>
+
+        <p>where &alpha; is the step size (learning rate). Too small and we crawl; too large and we overshoot.</p>
+
+        <h2>Steepest Descent with Exact Line Search</h2>
+
+        <p>The simplest variant: at each step, find the &alpha; that <em>exactly</em> minimizes <em>f</em> along the descent direction. For quadratic functions, there's a closed form. In practice, we use:</p>
+
+        <pre><code>def exact_line_search(f, grad, x, d):
+    """Find optimal step size along direction d"""
+    alpha = 1.0
+    c = 1e-4
+    while f(x + alpha * d) > f(x) + c * alpha * grad(x).dot(d):
+        alpha *= 0.5
+    return alpha</code></pre>
+
+        <h2>Inexact Line Search: Armijo &amp; Wolfe Conditions</h2>
+
+        <p>Exact line search is expensive. In practice we use the Armijo condition (sufficient decrease):</p>
+
+        <pre><code>f(x + &alpha; d) &le; f(x) + c&middot;&alpha; &middot; &nabla;f(x)&supT; d</code></pre>
+
+        <p>Combined with the curvature condition (Wolfe), this guarantees convergence while being much faster.</p>
+
+        <h2>Newton's Method</h2>
+
+        <p>Newton's method uses second-order information — the Hessian <em>H</em> — to pick both direction <em>and</em> step size:</p>
+
+        <pre><code>x_{k+1} = x_k - H(x_k)&sup1; &nabla;f(x_k)</code></pre>
+
+        <p>Quadratic convergence near the optimum, but computing <em>H</em> is <em>O(n&sup2;)</em> and inverting it is <em>O(n&sup3;)</em>. Quasi-Newton methods (BFGS, DFP) approximate the inverse Hessian iteratively for <em>O(n&sup2;)</em> total.</p>
+
+        <h2>Trust Region Methods</h2>
+
+        <p>Instead of picking a direction first, trust region methods pick a <em>region</em> around the current point where we trust the quadratic approximation. The subproblem: minimize the model subject to a radius constraint. Particularly robust for non-convex problems.</p>
+
+        <h2>When to Use What</h2>
+
+        <table>
+            <tr><th>Method</th><th>Cost/Iter</th><th>Convergence</th><th>Best For</th></tr>
+            <tr><td>Steepest Descent</td><td>O(n)</td><td>Linear</td><td>Large-scale, cheap gradients</td></tr>
+            <tr><td>Newton</td><td>O(n&sup3;)</td><td>Quadratic</td><td>Small <em>n</em>, need high precision</td></tr>
+            <tr><td>BFGS</td><td>O(n&sup2;)</td><td>Superlinear</td><td>Medium-scale, general purpose</td></tr>
+            <tr><td>Conjugate Gradient</td><td>O(n)</td><td>Linear</td><td>Large-scale, nearly-quadratic</td></tr>
+            <tr><td>Trust Region</td><td>varies</td><td>Superlinear</td><td>Non-convex, hard problems</td></tr>
+        </table>
+
+        <h2>Experiment Results</h2>
+
+        <p>On the modified Rosenbrock function (a classic banana-shaped test problem), here's how they compare:</p>
+
+        <ul>
+            <li><b>2D Modified Rosenbrock:</b> Newton converges in ~15 iterations. Steepest descent takes 500+ with exact line search, 80+ with Wolfe.</li>
+            <li><b>4D extension:</b> The gap widens. Newton/BFGS finish in under 50 iterations; steepest descent struggles past 1000.</li>
+        </ul>
+
+        <p>The full code and plots are in my <a href="https://github.com/wxzher/Note-for-Mathematics">Mathematics Notes</a> repository under <code>Numerical-Optimization/experiment1-gradient-descent/</code>.</p>
+
+    </div>
+
+    <p class="back-link"><a href="index.html">← Back to blog</a></p>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Blog — Xiaozhen Wu</title>
+    <link rel="stylesheet" href="../assets/css/simple.css">
+</head>
+<body>
+    <div class="center">
+        <h1><a href="../index.html" style="color:inherit;text-decoration:none;">Xiaozhen Wu</a> — Blog</h1>
+    </div>
+
+    <ul class="links">
+        <li><a href="../index.html">[Home]</a></li>
+        <li><a href="mailto:wxzher@outlook.com">[Email]</a></li>
+        <li><a href="https://github.com/wxzher">[GitHub]</a></li>
+    </ul>
+
+    <hr>
+
+    <h2>Posts</h2>
+
+    <div class="blog-post">
+        <span class="date">2026-06-15</span>
+        <span class="title"><a href="gradient-descent-visual-guide.html">Gradient Descent Demystified: A Visual Guide</a></span>
+        <p>An intuitive walkthrough of gradient descent methods — steepest descent, Newton, and quasi-Newton — with Python code examples and convergence plots.</p>
+    </div>
+
+    <hr>
+
+    <h2>How to Write a Blog Post</h2>
+
+    <div class="md-guide">
+        <p><b>Step 1:</b> Write your post in Markdown. Use this format at the top:</p>
+        <pre><code>---
+title: "Your Post Title"
+date: 2026-06-15
+---
+
+Your content here. Use standard Markdown:
+
+## Section heading
+
+- bullet points
+- `inline code`
+
+```python
+# code blocks
+print("hello")
+```
+
+Math: $f(x) = x^2$</code></pre>
+
+        <p><b>Step 2:</b> Convert to HTML. In the <code>blog/</code> directory, run:</p>
+        <pre><code>conda activate writing-tools
+python -c "
+import markdown, sys
+text = open('your-post.md').read()
+html = markdown.markdown(text, extensions=['fenced_code', 'codehilite', 'tables'])
+title = text.split('\n')[1].replace('title: ','').strip('\"')
+date  = text.split('\n')[2].replace('date: ','').strip()
+template = open('_template.html').read()
+template = template.replace('{{TITLE}}', title)
+template = template.replace('{{DATE}}', date)
+template = template.replace('{{CONTENT}}', html)
+open('your-post.html','w').write(template)
+print('Generated your-post.html')
+"</code></pre>
+
+        <p><b>Step 3:</b> Add a link to your new post in this page (<code>blog/index.html</code>), commit, and push.</p>
+    </div>
+
+    <p class="back-link"><a href="../index.html">← Back to homepage</a></p>
+</body>
+</html>
