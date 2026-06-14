@@ -1,11 +1,11 @@
 # Personal Website
 
-Minimal academic personal website for Xiaozhen Wu (巫小珍), built with plain HTML & CSS. Inspired by [Prof. Dr. Style](https://contemporary-home-computing.org/prof-dr-style/) and [Alexander Hoyle](https://alexanderhoyle.com/).
+Academic personal website for Xiaozhen Wu (巫小珍), built with plain HTML & CSS.
 
 ## Structure
 
 ```
-personal-website/
+Profile/
 ├── index.html                  # Main page
 ├── blog/
 │   └── index.html              # Blog listing page
