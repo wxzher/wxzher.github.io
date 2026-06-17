@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>多智能体强化学习：群体智能的计算框架 — Xiaozhen Wu</title>
+    <link rel="stylesheet" href="../assets/css/simple.css">
+    <style>
+        .lang-switch {
+            position: absolute;
+            top: 12px;
+            right: 20px;
+            font-size: 0.85em;
+        }
+        .lang-switch a {
+            display: inline-block;
+            padding: 3px 10px;
+            margin-left: 4px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            color: #555;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .lang-switch a.active {
+            background: #3498db;
+            color: #fff;
+            border-color: #3498db;
+        }
+        .lang-switch a:hover:not(.active) {
+            background: #eee;
+        }
+        body { position: relative; }
+        @media (max-width: 600px) {
+            .lang-switch {
+                position: static;
+                text-align: center;
+                margin-bottom: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="lang-switch">
+    <a onclick="switchLang('zh')" id="btn-zh">中</a>
+    <a onclick="switchLang('en')" id="btn-en">EN</a>
+</div>
+
+<div class="center">
+    <h1><a href="../" style="color:inherit;text-decoration:none;">Xiaozhen Wu</a></h1>
+</div>
+
+<ul class="links">
+    <li><a href="../">[Home]</a></li>
+    <li><a href="./">[Blog]</a></li>
+    <li><a href="mailto:wxzher@outlook.com">[Email]</a></li>
+</ul>
+
+<hr>
+
+<div class="post-header">
+    <h2><span class="zh">多智能体强化学习：群体智能的计算框架</span><span class="en">Multi-Agent Reinforcement Learning: A Framework for Collective Intelligence</span></h2>
+    <span class="post-date">2026-06-18</span>
+</div>
+
+<div class="post-body">
+
+<div class="zh">
+
+<p>鸟群如何在没有领导者的情况下协调行动？交通模式如何自组织？成千上万个 AI 智能体如何学会合作、竞争或协调？这些问题都指向同一个根本问题：<b>理解从去中心化交互中涌现的集体行为</b>。多智能体强化学习（MARL）正是研究这一问题的计算框架。</p>
+
+<h2>从单智能体到多智能体 RL</h2>
+
+<p>在标准（单智能体）强化学习中，智能体学习一个策略 &pi;(a|s)，将状态映射到动作以最大化累积奖励。环境通常是平稳的——转移动态 P(s'|s,a) 与奖励函数 R(s,a) 不随时间变化。</p>
+
+<p>MARL 打破了这一假设。当多个智能体同时学习时，每个智能体的策略更新都会改变其他智能体所感知的环境。环境变得<b>非平稳</b>，马尔可夫性质不再成立。这既是挑战，也是——对我们这些对复杂系统感兴趣的人来说——关键所在。</p>
+
+<p>形式上，马尔可夫博弈（随机博弈）将 MDP 扩展到 N 个智能体：</p>
+
+<pre><code>(S, {A_i}_{i=1}^N, P, {R_i}_{i=1}^N, &gamma;)
+
+其中：
+  S     — 共享状态空间
+  A_i   — 智能体 i 的动作空间
+  P     — 转移：S &times; A_1 &times; ... &times; A_N &rarr; &Delta;(S)
+  R_i   — 智能体 i 的奖励函数
+  &gamma; — 折扣因子</code></pre>
+
+<p>每个智能体旨在最大化自身的期望回报。根据奖励结构的不同，智能体可能面临<b>完全合作</b>（共享 R）、<b>完全竞争</b>（零和 R）或<b>混合</b>（一般和）场景。</p>
+
+<h2>MARL 的核心方法</h2>
+
+<h3>1. 独立学习器（IL）</h3>
+
+<p>最简单的方法：每个智能体独立运行自己的 RL 算法，将其他智能体视为环境的一部分。典型算法包括独立 Q-Learning（IQL）或独立 PPO（IPPO）。</p>
+
+<pre><code># 概念示意：独立 Q-Learning
+for 每个智能体 i 并行执行：
+    观测 s_i，执行动作 a_i ~ &epsilon;-贪心(Q_i)
+    收到 r_i，观测 s_i'
+    Q_i(s_i, a_i) &larr; Q_i(s_i, a_i) + &alpha;[r_i + &gamma; max Q_i(s_i', a') - Q_i(s_i, a_i)]</code></pre>
+
+<p><b>优点：</b>简单、可扩展、无通信开销。<br>
+<b>缺点：</b>非平稳性破坏了收敛保证。但在实践中效果出奇地好。</p>
+
+<h3>2. 集中训练、分布执行（CTDE）</h3>
+
+<p>CTDE 是现代 MARL 的主流范式。在<b>训练</b>阶段，智能体可以访问全局信息（其他智能体的观测、动作，甚至完整状态）。在<b>执行</b>阶段，每个智能体仅使用自身的局部观测采取行动。</p>
+
+<p>代表性算法：</p>
+
+<ul>
+    <li><b>MADDPG</b>（Lowe et al., 2017）：每个智能体拥有一个以所有智能体动作为条件的集中式评论家 Q(s, a_1, ..., a_N)，以及仅使用局部观测的分布式演员 &pi;(a_i | o_i)。评论家在执行时丢弃。</li>
+    <li><b>QMIX</b>（Rashid et al., 2018）：在合作场景中，将联合 Q 函数 Q_tot 分解为各智能体 Q_i 值的单调组合。混合网络强制 &part;Q_tot / &part;Q_i &ge; 0，确保个体与集体目标的一致性。</li>
+    <li><b>MAPPO</b>（Yu et al., 2022）：将 PPO 扩展至多智能体场景，使用集中式价值函数。实现简单，实证表现强劲。</li>
+</ul>
+
+<h3>3. 通信与涌现协调</h3>
+
+<p>最令人兴奋的方向之一：智能体可以学会<b>通信</b>。在 CommNet 或 RIAL 等框架中，智能体向邻居发送连续或离散消息。经过训练后，通信协议<b>涌现</b>出来——没有人设计了这门"语言"，它之所以演化，是因为它帮助智能体协调行动。</p>
+
+<p>这与理解人类通信系统如何涌现和稳定直接相关。与演化博弈论中的<b>信号博弈</b>有惊人的相似之处。</p>
+
+<h2>为什么 MARL 对复杂系统研究很重要</h2>
+
+<p>传统的智能体建模（ABM）使用手工设计的的行为规则（如 Boids 模型："对齐、凝聚、分离"）。MARL 将这些规则替换为<b>学习得到</b>的行为。我们不再指定智能体<b>应该</b>做什么，而是指定它们<b>应该达成</b>什么（奖励），让它们自行探索如何做到。</p>
+
+<p>这打开了若干前沿方向：</p>
+
+<ul>
+    <li><b>涌现：</b>当我们改变种群规模、网络拓扑或奖励结构时，集体行为中是否能观察到相变？</li>
+    <li><b>适应：</b>MARL 种群如何应对环境冲击或对抗性扰动？</li>
+    <li><b>规范涌现：</b>在什么条件下，合作规范（公平、轮流、惩罚）能从纯粹自利的学习中涌现？</li>
+    <li><b>信息扩散：</b>部分可观测性和局部通信如何塑造学习者网络中的信念传播？</li>
+</ul>
+
+<h2>一个简单实验：网格世界中的协调</h2>
+
+<p>考虑一个最小化实验场景：N 个智能体在网格上，每个必须到达目标。目标是共享的，但智能体不能占据同一格子。奖励：到达目标 +10，每步 −1，碰撞 −5。</p>
+
+<pre><code># 网格世界 MARL 实验伪代码
+class GridWorldMARL:
+    def step(self, actions):
+        # 执行动作，解决碰撞
+        # 智能体具有部分可观测性（看到 3×3 邻域）
+        rewards = []
+        for i in range(self.n_agents):
+            if 到达目标(智能体_i):   rewards.append(10)
+            elif 碰撞(智能体_i):    rewards.append(-5)
+            else:                  rewards.append(-1)
+        return observations, rewards
+
+# 训练循环（MAPPO 风格）
+for episode in range(max_episodes):
+    obs = env.reset()
+    while not done:
+        actions = [policy_i.act(obs_i) for i, obs_i in enumerate(obs)]
+        next_obs, rewards, done = env.step(actions)
+        buffer.store(obs, actions, rewards, next_obs)
+        obs = next_obs
+    for agent_i in agents:
+        agent_i.update(buffer)  # 集中式评论家，分布式演员</code></pre>
+
+<p>会涌现什么？种群规模较小时，智能体学会轮流。规模较大时，拥堵模式和排队行为自然出现——没有人编写这些行为，它们来自奖励结构和多智能体动态。</p>
+
+<h2>我正在思考的开放问题</h2>
+
+<ol>
+    <li><b>可扩展性：</b>当我们将智能体从几十个扩展到数千个时，学习得到的集体行为如何变化？大多数 MARL 基准测试使用 N &le; 10。</li>
+    <li><b>异质性：</b>真实种群在能力、目标和信息方面是多样化的。异质性如何影响涌现协调？</li>
+    <li><b>从 ABM 到 MARL：</b>我们能否在 MARL 中重新实现经典 ABM 模型（Schelling 隔离、Sugarscape、SIR）并观察到更丰富的动态？</li>
+    <li><b>桥接层次：</b>如何从形式上刻画微观-宏观联系——从个体 Q 函数到种群层面的均衡？</li>
+</ol>
+
+<h2>资源推荐</h2>
+
+<ul>
+    <li><b>综述：</b><a href="https://arxiv.org/abs/1911.10635">A Survey and Critique of Multiagent Deep Reinforcement Learning</a>（Hernandez-Leal et al., 2019）</li>
+    <li><b>教材：</b><a href="https://www.marl-book.com/">Multi-Agent Reinforcement Learning: Foundations and Modern Approaches</a>（Albrecht et al., 2024）</li>
+    <li><b>代码：</b><a href="https://github.com/oxwhirl/pymarl">PyMARL</a>（QMIX, QTRAN 实现）· <a href="https://github.com/oxwhirl/smac">SMAC</a>（星际争霸 MARL 基准）· <a href="https://pettingzoo.farama.org/">PettingZoo</a>（多智能体 Gym）</li>
+    <li><b>与 ABM 的联系：</b>我的<a href="https://github.com/wxzher/Agent-Based-Modeling-Study-Group">ABM 学习小组</a>笔记涵盖了 MARL 所基于的智能体建模基础。</li>
+</ul>
+
+<p>我将在代码中更具体地探索这些想法——可能使用 PettingZoo + cleanRL 风格的实现——并将结果分享在这里。如果你也在研究相关问题，欢迎交流。</p>
+
+</div>
+
+<div class="en">
+
+<p>How does a flock of birds coordinate without a leader? How do traffic patterns self-organize? How might thousands of AI agents learn to cooperate, compete, or coordinate? These questions all point to the same underlying problem: <b>understanding collective behavior emerging from decentralized interactions</b>. Multi-Agent Reinforcement Learning (MARL) provides a computational framework to study exactly this.</p>
+
+<h2>From Single-Agent to Multi-Agent RL</h2>
+
+<p>In standard (single-agent) reinforcement learning, an agent learns a policy &pi;(a|s) that maps states to actions to maximize cumulative reward. The environment is typically stationary — the transition dynamics P(s'|s,a) and reward function R(s,a) don't change over time.</p>
+
+<p>MARL breaks this assumption. When multiple agents learn simultaneously, each agent's policy update changes the environment from the perspective of every other agent. The environment becomes <b>non-stationary</b>, and the Markov property no longer holds. This is both a challenge and — for those of us interested in complex systems — the whole point.</p>
+
+<p>Formally, a Markov game (stochastic game) extends the MDP to N agents:</p>
+
+<pre><code>(S, {A_i}_{i=1}^N, P, {R_i}_{i=1}^N, &gamma;)
+
+where:
+  S     — shared state space
+  A_i   — action space of agent i
+  P     — transition: S &times; A_1 &times; ... &times; A_N &rarr; &Delta;(S)
+  R_i   — reward function for agent i
+  &gamma; — discount factor</code></pre>
+
+<p>Each agent aims to maximize its own expected return. Depending on how rewards are structured, agents may face <b>fully cooperative</b> (shared R), <b>fully competitive</b> (zero-sum R), or <b>mixed</b> (general-sum) settings.</p>
+
+<h2>Key Approaches in MARL</h2>
+
+<h3>1. Independent Learners (IL)</h3>
+
+<p>The simplest approach: each agent runs its own RL algorithm, treating other agents as part of the environment. Think Independent Q-Learning (IQL) or Independent PPO (IPPO).</p>
+
+<pre><code># Conceptual sketch: Independent Q-Learning
+for each agent i in parallel:
+    observe s_i, take action a_i ~ &epsilon;-greedy(Q_i)
+    receive r_i, observe s_i'
+    Q_i(s_i, a_i) &larr; Q_i(s_i, a_i) + &alpha;[r_i + &gamma; max Q_i(s_i', a') - Q_i(s_i, a_i)]</code></pre>
+
+<p><b>Pros:</b> Simple, scalable, no communication overhead.<br>
+<b>Cons:</b> Non-stationarity from the learner's perspective breaks convergence guarantees. Works surprisingly well in practice though.</p>
+
+<h3>2. Centralized Training with Decentralized Execution (CTDE)</h3>
+
+<p>CTDE is the dominant paradigm in modern MARL. During <b>training</b>, agents can access global information (other agents' observations, actions, even the full state). During <b>execution</b>, each agent acts using only its own local observation.</p>
+
+<p>Representative algorithms:</p>
+
+<ul>
+    <li><b>MADDPG</b> (Lowe et al., 2017): Each agent has a centralized critic Q(s, a_1, ..., a_N) that conditions on all agents' actions, but a decentralized actor &pi;(a_i | o_i) that uses only local observation. The critic is discarded at execution time.</li>
+    <li><b>QMIX</b> (Rashid et al., 2018): For cooperative settings, factorizes the joint Q-function Q_tot as a monotonic combination of per-agent Q_i values. A mixing network enforces &part;Q_tot / &part;Q_i &ge; 0, ensuring consistency between individual and collective goals.</li>
+    <li><b>MAPPO</b> (Yu et al., 2022): Extends PPO to multi-agent settings with a centralized value function. Simple to implement, strong empirical performance.</li>
+</ul>
+
+<h3>3. Communication and Emergent Coordination</h3>
+
+<p>One of the most exciting directions: agents can learn to <b>communicate</b>. In frameworks like CommNet or RIAL, agents send continuous or discrete messages to neighbors. Over training, communication protocols <b>emerge</b> — no one designed the language, it evolved because it helped agents coordinate.</p>
+
+<p>This is directly relevant to understanding how human communication systems might emerge and stabilize. The parallels to <b>signaling games</b> in evolutionary game theory are striking.</p>
+
+<h2>Why MARL Matters for Complex Systems Research</h2>
+
+<p>Traditional agent-based models (ABMs) use hand-crafted behavioral rules (e.g., Boids: "align, cohere, separate"). MARL replaces these with <b>learned</b> behaviors. Instead of specifying what agents <em>should</em> do, we specify what they should <em>achieve</em> (the reward), and let them figure out how.</p>
+
+<p>This opens several frontiers:</p>
+
+<ul>
+    <li><b>Emergence:</b> Can we observe phase transitions in collective behavior as we vary population size, network topology, or reward structure?</li>
+    <li><b>Adaptation:</b> How do MARL populations respond to environmental shocks or adversarial perturbations?</li>
+    <li><b>Norm emergence:</b> Under what conditions do cooperative norms (fairness, turn-taking, punishment) emerge from purely self-interested learning?</li>
+    <li><b>Information diffusion:</b> How does partial observability and local communication shape belief propagation through a network of learners?</li>
+</ul>
+
+<h2>A Simple Experiment: Coordination in a Grid World</h2>
+
+<p>To make this concrete, consider a minimal setup: N agents on a grid, each must reach a goal. Goals are shared but agents cannot occupy the same cell. Reward: +10 for reaching a goal, −1 per step, −5 for collision.</p>
+
+<pre><code># Pseudocode for grid-world MARL experiment
+class GridWorldMARL:
+    def step(self, actions):
+        # Apply actions, resolve collisions
+        # Agents share partial observability (see 3×3 neighborhood)
+        rewards = []
+        for i in range(self.n_agents):
+            if at_goal(agent_i):   rewards.append(10)
+            elif collision(agent_i): rewards.append(-5)
+            else:                   rewards.append(-1)
+        return observations, rewards
+
+# Training loop (MAPPO-style)
+for episode in range(max_episodes):
+    obs = env.reset()
+    while not done:
+        actions = [policy_i.act(obs_i) for i, obs_i in enumerate(obs)]
+        next_obs, rewards, done = env.step(actions)
+        buffer.store(obs, actions, rewards, next_obs)
+        obs = next_obs
+    for agent_i in agents:
+        agent_i.update(buffer)  # centralized critic, decentralized actor</code></pre>
+
+<p>What emerges? With small populations, agents learn to take turns. With larger populations, congestion patterns and queueing behavior emerge — no one programmed these behaviors, they arose from the reward structure and multi-agent dynamics.</p>
+
+<h2>Open Questions I'm Thinking About</h2>
+
+<ol>
+    <li><b>Scalability:</b> How do learned collective behaviors change as we scale from dozens to thousands of agents? Most MARL benchmarks use N &le; 10.</li>
+    <li><b>Heterogeneity:</b> Real populations are diverse in capabilities, goals, and information. How does heterogeneity affect emergent coordination?</li>
+    <li><b>From ABM to MARL:</b> Can we re-implement classic ABM models (Schelling segregation, Sugarscape, SIR) in MARL and observe richer dynamics?</li>
+    <li><b>Bridging levels:</b> How do we formally characterize the micro-macro link — from individual Q-functions to population-level equilibria?</li>
+</ol>
+
+<h2>Resources</h2>
+
+<ul>
+    <li><b>Survey:</b> <a href="https://arxiv.org/abs/1911.10635">A Survey and Critique of Multiagent Deep Reinforcement Learning</a> (Hernandez-Leal et al., 2019)</li>
+    <li><b>Textbook:</b> <a href="https://www.marl-book.com/">Multi-Agent Reinforcement Learning: Foundations and Modern Approaches</a> (Albrecht et al., 2024)</li>
+    <li><b>Code:</b> <a href="https://github.com/oxwhirl/pymarl">PyMARL</a> (QMIX, QTRAN implementations) · <a href="https://github.com/oxwhirl/smac">SMAC</a> (StarCraft MARL benchmark) · <a href="https://pettingzoo.farama.org/">PettingZoo</a> (multi-agent Gym)</li>
+    <li><b>Connection to ABM:</b> My <a href="https://github.com/wxzher/Agent-Based-Modeling-Study-Group">ABM Study Group</a> notes cover the agent-based modeling foundations that MARL builds upon.</li>
+</ul>
+
+<p>I'll be exploring these ideas more concretely in code — likely using PettingZoo + cleanRL-style implementations — and will share results here. If you're working on related questions, I'd love to hear from you.</p>
+
+</div>
+
+</div>
+
+<p class="back-link"><a href="index.html"><span class="zh">← 返回博客</span><span class="en">← Back to blog</span></a></p>
+
+<script>
+function switchLang(lang) {
+    localStorage.setItem('lang', lang);
+    applyLang(lang);
+}
+
+function applyLang(lang) {
+    var show = lang === 'zh' ? '.zh' : '.en';
+    var hide = lang === 'zh' ? '.en' : '.zh';
+    document.querySelectorAll(show).forEach(function(el) { el.style.display = ''; });
+    document.querySelectorAll(hide).forEach(function(el) { el.style.display = 'none'; });
+    document.getElementById('btn-zh').classList.toggle('active', lang === 'zh');
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+}
+
+applyLang(localStorage.getItem('lang') || 'zh');
+</script>
+
+</body>
+</html>

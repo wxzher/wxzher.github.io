@@ -1,46 +1,156 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Gradient Descent Demystified: A Visual Guide — Xiaozhen Wu</title>
+    <title>梯度下降解密：可视化指南 — Xiaozhen Wu</title>
     <link rel="stylesheet" href="../assets/css/simple.css">
+    <style>
+        .lang-switch {
+            position: absolute;
+            top: 12px;
+            right: 20px;
+            font-size: 0.85em;
+        }
+        .lang-switch a {
+            display: inline-block;
+            padding: 3px 10px;
+            margin-left: 4px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            color: #555;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .lang-switch a.active {
+            background: #3498db;
+            color: #fff;
+            border-color: #3498db;
+        }
+        .lang-switch a:hover:not(.active) {
+            background: #eee;
+        }
+        body { position: relative; }
+        @media (max-width: 600px) {
+            .lang-switch {
+                position: static;
+                text-align: center;
+                margin-bottom: 1em;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="center">
-        <h1><a href="../" style="color:inherit;text-decoration:none;">Xiaozhen Wu</a></h1>
-    </div>
 
-    <ul class="links">
-        <li><a href="../">[Home]</a></li>
-        <li><a href="./">[Blog]</a></li>
-        <li><a href="mailto:wxzher@outlook.com">[Email]</a></li>
-    </ul>
+<div class="lang-switch">
+    <a onclick="switchLang('zh')" id="btn-zh">中</a>
+    <a onclick="switchLang('en')" id="btn-en">EN</a>
+</div>
 
-    <hr>
+<div class="center">
+    <h1><a href="../" style="color:inherit;text-decoration:none;">Xiaozhen Wu</a></h1>
+</div>
 
-    <div class="post-header">
-        <h2>Gradient Descent Demystified: A Visual Guide</h2>
-        <span class="post-date">2026-06-15</span>
-    </div>
+<ul class="links">
+    <li><a href="../">[Home]</a></li>
+    <li><a href="./">[Blog]</a></li>
+    <li><a href="mailto:wxzher@outlook.com">[Email]</a></li>
+</ul>
 
-    <div class="post-body">
+<hr>
 
-        <p>Gradient descent is the workhorse of modern optimization. Whether you're training a neural network or fitting a logistic regression, you're almost certainly using some variant of it. This post walks through the key ideas, with code.</p>
+<div class="post-header">
+    <h2><span class="zh">梯度下降解密：可视化指南</span><span class="en">Gradient Descent Demystified: A Visual Guide</span></h2>
+    <span class="post-date">2026-06-15</span>
+</div>
 
-        <h2>What is Gradient Descent?</h2>
+<div class="post-body">
 
-        <p>Given a function <em>f(x)</em>, we want to find the <em>x</em> that minimizes it. The gradient &nabla;<em>f</em> points in the direction of steepest <em>ascent</em>, so we move in the <em>opposite</em> direction:</p>
+<div class="zh">
 
-        <pre><code>x_{k+1} = x_k - &alpha; &nabla;f(x_k)</code></pre>
+<p>梯度下降是现代优化的主力工具。无论是训练神经网络还是拟合逻辑回归，你几乎一定在使用它的某种变体。本文带你走一遍核心思想，附代码。</p>
 
-        <p>where &alpha; is the step size (learning rate). Too small and we crawl; too large and we overshoot.</p>
+<h2>什么是梯度下降？</h2>
 
-        <h2>Steepest Descent with Exact Line Search</h2>
+<p>给定一个函数 <em>f(x)</em>，我们希望找到使其最小化的 <em>x</em>。梯度 &nabla;<em>f</em> 指向最陡<b>上升</b>方向，因此我们沿<b>相反</b>方向移动：</p>
 
-        <p>The simplest variant: at each step, find the &alpha; that <em>exactly</em> minimizes <em>f</em> along the descent direction. For quadratic functions, there's a closed form. In practice, we use:</p>
+<pre><code>x_{k+1} = x_k - &alpha; &nabla;f(x_k)</code></pre>
 
-        <pre><code>def exact_line_search(f, grad, x, d):
+<p>其中 &alpha; 是步长（学习率）。太小则缓慢爬行；太大则过冲。</p>
+
+<h2>精确线搜索的最速下降法</h2>
+
+<p>最简单的变体：每一步找到在下降方向上<i>恰好</i>最小化 <em>f</em> 的 &alpha;。对于二次函数，存在闭式解。实际中我们使用：</p>
+
+<pre><code>def exact_line_search(f, grad, x, d):
+    """沿方向 d 寻找最优步长"""
+    alpha = 1.0
+    c = 1e-4
+    while f(x + alpha * d) > f(x) + c * alpha * grad(x).dot(d):
+        alpha *= 0.5
+    return alpha</code></pre>
+
+<h2>非精确线搜索：Armijo 与 Wolfe 条件</h2>
+
+<p>精确线搜索代价高昂。实践中我们使用 Armijo 条件（充分下降）：</p>
+
+<pre><code>f(x + &alpha; d) &le; f(x) + c&middot;&alpha; &middot; &nabla;f(x)&supT; d</code></pre>
+
+<p>结合曲率条件（Wolfe），这在保证收敛的同时快得多。</p>
+
+<h2>牛顿法</h2>
+
+<p>牛顿法利用二阶信息——海森矩阵 <em>H</em>——同时选择方向和步长：</p>
+
+<pre><code>x_{k+1} = x_k - H(x_k)&sup1; &nabla;f(x_k)</code></pre>
+
+<p>在最优解附近具有二次收敛性，但计算 <em>H</em> 为 <em>O(n&sup2;)</em>，求逆为 <em>O(n&sup3;)</em>。拟牛顿法（BFGS, DFP）通过迭代逼近逆海森矩阵，总代价 <em>O(n&sup2;)</em>。</p>
+
+<h2>信赖域方法</h2>
+
+<p>信赖域方法不先选择方向，而是先划出一个<b>区域</b>，在该区域内我们信任二次近似。子问题：在半径约束下最小化模型。对非凸问题尤为稳健。</p>
+
+<h2>方法选型指南</h2>
+
+<table>
+    <tr><th>方法</th><th>每次迭代代价</th><th>收敛性</th><th>适用场景</th></tr>
+    <tr><td>最速下降</td><td>O(n)</td><td>线性</td><td>大规模、梯度廉价</td></tr>
+    <tr><td>牛顿法</td><td>O(n&sup3;)</td><td>二次</td><td>小规模 <em>n</em>，需高精度</td></tr>
+    <tr><td>BFGS</td><td>O(n&sup2;)</td><td>超线性</td><td>中等规模，通用</td></tr>
+    <tr><td>共轭梯度</td><td>O(n)</td><td>线性</td><td>大规模、近二次</td></tr>
+    <tr><td>信赖域</td><td>不定</td><td>超线性</td><td>非凸、困难问题</td></tr>
+</table>
+
+<h2>实验结果</h2>
+
+<p>在修正 Rosenbrock 函数（经典的香蕉形测试问题）上的对比如下：</p>
+
+<ul>
+    <li><b>2D 修正 Rosenbrock：</b>牛顿法约 15 次迭代收敛。精确线搜索最速下降需 500+ 次，Wolfe 线搜索需 80+ 次。</li>
+    <li><b>4D 扩展：</b>差距进一步拉大。牛顿/BFGS 在 50 次迭代内完成；最速下降超过 1000 次。</li>
+</ul>
+
+<p>完整代码与绘图见我的<a href="https://github.com/wxzher/Note-for-Mathematics">数学笔记</a>仓库 <code>Numerical-Optimization/experiment1-gradient-descent/</code> 目录。</p>
+
+</div>
+
+<div class="en">
+
+<p>Gradient descent is the workhorse of modern optimization. Whether you're training a neural network or fitting a logistic regression, you're almost certainly using some variant of it. This post walks through the key ideas, with code.</p>
+
+<h2>What is Gradient Descent?</h2>
+
+<p>Given a function <em>f(x)</em>, we want to find the <em>x</em> that minimizes it. The gradient &nabla;<em>f</em> points in the direction of steepest <em>ascent</em>, so we move in the <em>opposite</em> direction:</p>
+
+<pre><code>x_{k+1} = x_k - &alpha; &nabla;f(x_k)</code></pre>
+
+<p>where &alpha; is the step size (learning rate). Too small and we crawl; too large and we overshoot.</p>
+
+<h2>Steepest Descent with Exact Line Search</h2>
+
+<p>The simplest variant: at each step, find the &alpha; that <em>exactly</em> minimizes <em>f</em> along the descent direction. For quadratic functions, there's a closed form. In practice, we use:</p>
+
+<pre><code>def exact_line_search(f, grad, x, d):
     """Find optimal step size along direction d"""
     alpha = 1.0
     c = 1e-4
@@ -48,50 +158,72 @@
         alpha *= 0.5
     return alpha</code></pre>
 
-        <h2>Inexact Line Search: Armijo &amp; Wolfe Conditions</h2>
+<h2>Inexact Line Search: Armijo &amp; Wolfe Conditions</h2>
 
-        <p>Exact line search is expensive. In practice we use the Armijo condition (sufficient decrease):</p>
+<p>Exact line search is expensive. In practice we use the Armijo condition (sufficient decrease):</p>
 
-        <pre><code>f(x + &alpha; d) &le; f(x) + c&middot;&alpha; &middot; &nabla;f(x)&supT; d</code></pre>
+<pre><code>f(x + &alpha; d) &le; f(x) + c&middot;&alpha; &middot; &nabla;f(x)&supT; d</code></pre>
 
-        <p>Combined with the curvature condition (Wolfe), this guarantees convergence while being much faster.</p>
+<p>Combined with the curvature condition (Wolfe), this guarantees convergence while being much faster.</p>
 
-        <h2>Newton's Method</h2>
+<h2>Newton's Method</h2>
 
-        <p>Newton's method uses second-order information — the Hessian <em>H</em> — to pick both direction <em>and</em> step size:</p>
+<p>Newton's method uses second-order information — the Hessian <em>H</em> — to pick both direction <em>and</em> step size:</p>
 
-        <pre><code>x_{k+1} = x_k - H(x_k)&sup1; &nabla;f(x_k)</code></pre>
+<pre><code>x_{k+1} = x_k - H(x_k)&sup1; &nabla;f(x_k)</code></pre>
 
-        <p>Quadratic convergence near the optimum, but computing <em>H</em> is <em>O(n&sup2;)</em> and inverting it is <em>O(n&sup3;)</em>. Quasi-Newton methods (BFGS, DFP) approximate the inverse Hessian iteratively for <em>O(n&sup2;)</em> total.</p>
+<p>Quadratic convergence near the optimum, but computing <em>H</em> is <em>O(n&sup2;)</em> and inverting it is <em>O(n&sup3;)</em>. Quasi-Newton methods (BFGS, DFP) approximate the inverse Hessian iteratively for <em>O(n&sup2;)</em> total.</p>
 
-        <h2>Trust Region Methods</h2>
+<h2>Trust Region Methods</h2>
 
-        <p>Instead of picking a direction first, trust region methods pick a <em>region</em> around the current point where we trust the quadratic approximation. The subproblem: minimize the model subject to a radius constraint. Particularly robust for non-convex problems.</p>
+<p>Instead of picking a direction first, trust region methods pick a <em>region</em> around the current point where we trust the quadratic approximation. The subproblem: minimize the model subject to a radius constraint. Particularly robust for non-convex problems.</p>
 
-        <h2>When to Use What</h2>
+<h2>When to Use What</h2>
 
-        <table>
-            <tr><th>Method</th><th>Cost/Iter</th><th>Convergence</th><th>Best For</th></tr>
-            <tr><td>Steepest Descent</td><td>O(n)</td><td>Linear</td><td>Large-scale, cheap gradients</td></tr>
-            <tr><td>Newton</td><td>O(n&sup3;)</td><td>Quadratic</td><td>Small <em>n</em>, need high precision</td></tr>
-            <tr><td>BFGS</td><td>O(n&sup2;)</td><td>Superlinear</td><td>Medium-scale, general purpose</td></tr>
-            <tr><td>Conjugate Gradient</td><td>O(n)</td><td>Linear</td><td>Large-scale, nearly-quadratic</td></tr>
-            <tr><td>Trust Region</td><td>varies</td><td>Superlinear</td><td>Non-convex, hard problems</td></tr>
-        </table>
+<table>
+    <tr><th>Method</th><th>Cost/Iter</th><th>Convergence</th><th>Best For</th></tr>
+    <tr><td>Steepest Descent</td><td>O(n)</td><td>Linear</td><td>Large-scale, cheap gradients</td></tr>
+    <tr><td>Newton</td><td>O(n&sup3;)</td><td>Quadratic</td><td>Small <em>n</em>, need high precision</td></tr>
+    <tr><td>BFGS</td><td>O(n&sup2;)</td><td>Superlinear</td><td>Medium-scale, general purpose</td></tr>
+    <tr><td>Conjugate Gradient</td><td>O(n)</td><td>Linear</td><td>Large-scale, nearly-quadratic</td></tr>
+    <tr><td>Trust Region</td><td>varies</td><td>Superlinear</td><td>Non-convex, hard problems</td></tr>
+</table>
 
-        <h2>Experiment Results</h2>
+<h2>Experiment Results</h2>
 
-        <p>On the modified Rosenbrock function (a classic banana-shaped test problem), here's how they compare:</p>
+<p>On the modified Rosenbrock function (a classic banana-shaped test problem), here's how they compare:</p>
 
-        <ul>
-            <li><b>2D Modified Rosenbrock:</b> Newton converges in ~15 iterations. Steepest descent takes 500+ with exact line search, 80+ with Wolfe.</li>
-            <li><b>4D extension:</b> The gap widens. Newton/BFGS finish in under 50 iterations; steepest descent struggles past 1000.</li>
-        </ul>
+<ul>
+    <li><b>2D Modified Rosenbrock:</b> Newton converges in ~15 iterations. Steepest descent takes 500+ with exact line search, 80+ with Wolfe.</li>
+    <li><b>4D extension:</b> The gap widens. Newton/BFGS finish in under 50 iterations; steepest descent struggles past 1000.</li>
+</ul>
 
-        <p>The full code and plots are in my <a href="https://github.com/wxzher/Note-for-Mathematics">Mathematics Notes</a> repository under <code>Numerical-Optimization/experiment1-gradient-descent/</code>.</p>
+<p>The full code and plots are in my <a href="https://github.com/wxzher/Note-for-Mathematics">Mathematics Notes</a> repository under <code>Numerical-Optimization/experiment1-gradient-descent/</code>.</p>
 
-    </div>
+</div>
 
-    <p class="back-link"><a href="index.html">← Back to blog</a></p>
+</div>
+
+<p class="back-link"><a href="index.html"><span class="zh">← 返回博客</span><span class="en">← Back to blog</span></a></p>
+
+<script>
+function switchLang(lang) {
+    localStorage.setItem('lang', lang);
+    applyLang(lang);
+}
+
+function applyLang(lang) {
+    var show = lang === 'zh' ? '.zh' : '.en';
+    var hide = lang === 'zh' ? '.en' : '.zh';
+    document.querySelectorAll(show).forEach(function(el) { el.style.display = ''; });
+    document.querySelectorAll(hide).forEach(function(el) { el.style.display = 'none'; });
+    document.getElementById('btn-zh').classList.toggle('active', lang === 'zh');
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+}
+
+applyLang(localStorage.getItem('lang') || 'zh');
+</script>
+
 </body>
 </html>

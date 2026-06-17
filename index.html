@@ -1,126 +1,217 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Xiaozhen Wu — 巫小珍</title>
     <link rel="stylesheet" href="assets/css/simple.css">
+    <style>
+        .lang-switch {
+            position: absolute;
+            top: 12px;
+            right: 20px;
+            font-size: 0.85em;
+        }
+        .lang-switch a {
+            display: inline-block;
+            padding: 3px 10px;
+            margin-left: 4px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            color: #555;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .lang-switch a.active {
+            background: #3498db;
+            color: #fff;
+            border-color: #3498db;
+        }
+        .lang-switch a:hover:not(.active) {
+            background: #eee;
+        }
+        body { position: relative; }
+        @media (max-width: 600px) {
+            .lang-switch {
+                position: static;
+                text-align: center;
+                margin-bottom: 1em;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="center">
-        <h1>Xiaozhen Wu &ensp;巫小珍</h1>
-    </div>
 
-    <ul class="links">
-        <li><a href="assets/pdf/cv.pdf">[CV]</a></li>
-        <li><a href="mailto:wxzher@outlook.com">[Email]</a></li>
-        <li><a href="https://github.com/wxzher">[GitHub]</a></li>
-        <li><a href="blog/index.html">[Blog]</a></li>
-    </ul>
+<div class="lang-switch">
+    <a onclick="switchLang('zh')" id="btn-zh">中</a>
+    <a onclick="switchLang('en')" id="btn-en">EN</a>
+</div>
 
-    <hr>
+<div class="center">
+    <h1>Xiaozhen Wu &ensp;巫小珍</h1>
+</div>
 
-    <div class="about">
-        <p><img class="prof-pic" alt="Xiaozhen Wu" src="assets/img/prof_pic.jpg"></p>
+<ul class="links">
+    <li><a href="assets/pdf/cv.pdf">[CV]</a></li>
+    <li><a href="mailto:wxzher@outlook.com">[Email]</a></li>
+    <li><a href="https://github.com/wxzher">[GitHub]</a></li>
+    <li><a href="blog/index.html">[Blog]</a></li>
+</ul>
 
-        <p>I am a master's student in <b>Journalism & Communication (Intelligent Communication)</b> at <a href="https://www.whu.edu.cn/">Wuhan University</a> (2024–2027), advised by Prof. <a href="https://qingxingdong.github.io/">Qingxing Dong</a>. My research lies at the intersection of <b>computational social science</b>, <b>complex systems</b>, and <b>network science</b>.</p>
+<hr>
 
-        <p>Many of the questions that interest me share a common theme: <b>how do large-scale patterns emerge from countless local interactions?</b></p>
+<div class="about">
+    <p><img class="prof-pic" alt="Xiaozhen Wu" src="assets/img/prof_pic.jpg"></p>
 
-        <p>I am fascinated by phenomena such as <b>information diffusion</b>, <b>collective behavior</b>, and the dynamics of social and technological systems. What draws me to these problems is the possibility that seemingly complex outcomes may arise from relatively simple underlying mechanisms.</p>
+    <!-- Para 1 -->
+    <div class="zh"><p>我目前就读于<a href="https://www.whu.edu.cn/">武汉大学</a><b>新闻传播学院</b>（智能传播方向）硕士（2024–2027），师从<a href="https://qingxingdong.github.io/">董庆兴教授</a>。我的研究兴趣聚焦于<b>复杂适应系统</b>、<b>群体智能</b>以及<b>多智能体学习</b>。我特别关注一个核心问题：<b>智能体之间简单的局部交互如何产生复杂的集体行为与涌现智能</b>。</p></div>
+    <div class="en"><p>I am a master's student in the <b>Intelligent Communication</b> track at the <b>School of Journalism and Communication</b>, <a href="https://www.whu.edu.cn/">Wuhan University</a> (2024–2027), advised by Prof. <a href="https://qingxingdong.github.io/">Qingxing Dong</a>. My research interests lie in <b>complex adaptive systems</b>, <b>collective intelligence</b>, and <b>multi-agent learning</b>. I am driven by a central question: <b>how do simple local interactions among agents give rise to complex collective behavior and emergent intelligence?</b></p></div>
 
-        <p>To explore these questions, I use computational approaches including <b>network analysis</b>, <b>machine learning</b>, and <b>agent-based modeling</b>. My broader goal is to better understand how complex adaptive systems evolve, respond to change, and generate emergent behavior.</p>
+    <!-- Para 2 -->
+    <div class="zh"><p>我对<b>协调</b>、<b>合作</b>、<b>竞争</b>、<b>信息传播</b>以及<b>适应性行为</b>等现象十分感兴趣。这些现象广泛存在于社会系统、生物群体以及人工智能系统之中。吸引我的是这样一种观点：复杂系统层面的智能往往并非来自中心化控制，而是源于大量个体之间持续的交互与学习过程。</p></div>
+    <div class="en"><p>I am deeply interested in phenomena such as <b>coordination</b>, <b>cooperation</b>, <b>competition</b>, <b>information diffusion</b>, and <b>adaptive behavior</b> — phenomena that permeate social systems, biological collectives, and artificial intelligence systems alike. What fascinates me is the idea that system-level intelligence often arises not from centralized control, but from sustained local interactions and learning among a large number of individuals.</p></div>
 
-        <p><b>I am actively seeking a PhD position starting Fall 2027</b> in computational social science, complex systems, or network science. If my research interests align with yours, I would be delighted to connect.</p>
+    <!-- Para 3 -->
+    <div class="zh"><p>在研究方法上，我主要使用<b>网络科学</b>、<b>机器学习</b>、<b>智能体建模</b>（Agent-Based Modeling）与<b>大规模仿真</b>。近年来，我开始将研究兴趣扩展到<b>多智能体强化学习</b>（MARL），希望利用学习型智能体研究复杂系统中的协同、适应与涌现现象。</p></div>
+    <div class="en"><p>Methodologically, I draw on <b>network science</b>, <b>machine learning</b>, <b>agent-based modeling</b> (ABM), and <b>large-scale simulation</b>. More recently, I have extended my interests to <b>multi-agent reinforcement learning</b> (MARL), aiming to use learning agents to study coordination, adaptation, and emergence in complex systems.</p></div>
 
-        <p>Previously, I interned as an algorithm research engineer at <a href="https://www.iflytek.com/">iFlytek Healthcare</a> (May–Sep 2025), where I built NER systems, multi-task learning frameworks for food safety, and epidemiological models (SIR/MSEIR + ABM). I also interned at <a href="https://www.miracleplus.com/">MiraclePlus</a> (YC China, Feb–Jun 2023) as a product intern.</p>
+    <!-- Para 4 -->
+    <div class="zh"><p>我的长期目标是构建连接智能体学习机制与宏观系统行为的统一计算框架，从而理解<b>群体智能</b>、<b>协作决策</b>以及<b>复杂适应系统</b>中的涌现规律。我尤其希望探索学习、通信与交互如何促进集体智能的形成，以及这些机制如何被用于构建更强大的多智能体系统。</p></div>
+    <div class="en"><p>My long-term goal is to develop a unified computational framework that bridges agent-level learning mechanisms with macro-level system behavior, thereby deepening our understanding of <b>collective intelligence</b>, <b>collaborative decision-making</b>, and emergent regularities in <b>complex adaptive systems</b>. I am particularly eager to explore how learning, communication, and interaction facilitate the formation of collective intelligence, and how these mechanisms can be harnessed to build more capable multi-agent systems.</p></div>
 
-        <p>Outside of research, I enjoy table tennis — I've competed in several university tournaments — along with cycling, hiking, and reading.</p>
-    </div>
+    <!-- Para 5 -->
+    <div class="zh"><p><b>我正在积极寻找 2027 年秋季入学的博士机会</b>，研究方向包括多智能体系统、强化学习、复杂系统、群体智能与网络科学。若您的研究方向与我契合，欢迎联系。</p></div>
+    <div class="en"><p><b>I am actively seeking a PhD position starting in Fall 2027</b> in multi-agent systems, reinforcement learning, complex systems, collective intelligence, or network science. If my research interests align with yours, I would be delighted to connect.</p></div>
 
-    <h2>Education</h2>
-    <ul>
-        <li>
-            <b>M.A. in Journalism & Communication</b> (Intelligent Communication), Wuhan University &emsp; 2024–2027 (expected)<br>
-            GPA: 3.66/4.0 &ensp;|&ensp; Average: 91.94/100
-        </li>
-        <li>
-            <b>B.A. in Communication</b>, Wuhan University &emsp; 2020–2024<br>
-            GPA: 3.91/4.0 &ensp;|&ensp; Average: 91.39/100 &ensp;|&ensp; Rank: 1/40 &ensp;|&ensp; CET-6: 552 &ensp;|&ensp; Japanese: JLPT N2
-        </li>
-    </ul>
+    <!-- Para 6 -->
+    <div class="zh"><p>此前，我曾在<a href="https://www.iflytek.com/">科大讯飞医疗</a>（2025年5月至9月）担任算法研究工程师。期间，我参与构建了基于 Bi-LSTM-CRF 的医疗命名实体识别系统，设计了食品安全领域的多任务学习框架，并开发了结合仓室模型（SIR/MSEIR）与智能体建模的流行病传播仿真平台，用于评估不同干预策略的效果。我也曾在<a href="https://www.miracleplus.com/">奇绩创坛</a>（YC 中国，2023年2月至6月）担任产品实习生，参与早期创业项目的评估与筛选，积累了技术产品化与商业分析的经验。</p></div>
+    <div class="en"><p>Previously, I interned as an Algorithm Research Engineer at <a href="https://www.iflytek.com/">iFlytek Healthcare</a> (May–Sep 2025), where I built a Bi-LSTM-CRF-based medical NER system, designed a multi-task learning framework for food safety applications, and developed an epidemiological simulation platform combining compartmental models (SIR/MSEIR) with agent-based modeling to evaluate intervention strategies. I also interned at <a href="https://www.miracleplus.com/">MiraclePlus</a> (YC China, Feb–Jun 2023) as a Product Intern, where I participated in evaluating and screening early-stage startup projects, gaining experience in technology commercialization and business analysis.</p></div>
 
-    <h2>Publications</h2>
-    <ul class="pub-list">
-        <li>
-            <span class="title">How Misinformation Diffuses on Online Social Networks: Radical Opinions, Adaptive Relationship and Algorithmic Intervention</span><br>
-            <span class="author">Mengyi Zhang, Qingxing Dong, <b>Xiaozhen Wu</b></span><br>
-            <span class="periodical"><em>IEEE Transactions on Computational Social Systems</em> (SCI Q1), 2025</span><br>
-            <details>
-                <summary>Abstract</summary>
-                <p>Designed a dynamic model to capture the co-evolution of users' misinformation beliefs and social relationships under algorithmic interventions. Introduced assimilating and repelling nodes to analyze their roles in opinion evolution. Integrated five recommendation algorithms (content-based, user-based, relationship-based, popularity-based, and scheduled) to simulate information distribution mechanisms. Conducted repeated experiments in Python to analyze recommendation ratios, algorithms, node types, and rewiring rules on opinion polarization and moderation.</p>
-            </details>
-        </li>
-    </ul>
+    <!-- Para 7 -->
+    <div class="zh"><p>研究之外，我喜欢乒乓球、骑行、徒步和阅读。</p></div>
+    <div class="en"><p>Outside of research, I enjoy table tennis, cycling, hiking, and reading.</p></div>
+</div>
 
-    <h2>Honors & Awards</h2>
-    <table class="award-table">
-        <tr><td>2025</td><td><b>National First Prize</b>, "Huawei Cup" China Graduate Mathematical Modeling Contest</td></tr>
-        <tr><td>2025</td><td>First-Class Academic Scholarship, Wuhan University (top 10%)</td></tr>
-        <tr><td>2025</td><td>Advanced Individual in Extracurricular Sci-Tech Innovation & Entrepreneurship</td></tr>
-        <tr><td>2024</td><td>Outstanding New Student Scholarship, Wuhan University</td></tr>
-        <tr><td>2024–2025</td><td>Sportsmanship Award, Table Tennis — University Tournaments (4 events)</td></tr>
-        <tr><td>2023</td><td><b>Provincial First Prize</b>, Lanqiao Cup Web Application Development</td></tr>
-        <tr><td>2023</td><td>Provincial First Prize, China College Computer Design Contest</td></tr>
-        <tr><td>2020–2023</td><td>National Endeavor Scholarship (×2) &amp; Third-Class Academic Scholarship (×3)</td></tr>
-    </table>
+<h2><span class="zh">教育背景</span><span class="en">Education</span></h2>
+<ul>
+    <li>
+        <b><span class="zh">文学硕士 · 新闻传播学（智能传播）</span><span class="en">M.A. in Journalism & Communication</span></b><span class="zh">，武汉大学</span><span class="en"> (Intelligent Communication), Wuhan University</span> &emsp; <span class="zh">2024–2027（预计）</span><span class="en">2024–2027 (expected)</span><br>
+        GPA: 3.66/4.0 &ensp;|&ensp; <span class="zh">平均分</span><span class="en">Average</span>: 91.94/100
+    </li>
+    <li>
+        <b><span class="zh">文学学士 · 传播学（网络传播方向）</span><span class="en">B.A. in Communication (Network Communication)</span></b><span class="zh">，武汉大学</span><span class="en">, Wuhan University</span> &emsp; 2020–2024<br>
+        GPA: 3.91/4.0 &ensp;|&ensp; <span class="zh">平均分</span><span class="en">Average</span>: 91.39/100 &ensp;|&ensp; <span class="zh">排名</span><span class="en">Rank</span>: 1/40 &ensp;|&ensp; CET-6: 552 &ensp;|&ensp; <span class="zh">日语</span><span class="en">Japanese</span>: JLPT N2
+    </li>
+</ul>
 
-    <h2>Skills</h2>
-    <p>
-        <span class="tag">Python</span><span class="tag">R</span><span class="tag">SQL</span><span class="tag">MATLAB</span>
-        <span class="tag">NetLogo</span><span class="tag">ABM</span><span class="tag">SIR/MSEIR</span>
-        <span class="tag">Bi-LSTM-CRF</span><span class="tag">Transfer Learning</span><span class="tag">Multi-Task Learning</span>
-        <span class="tag">NetworkX</span><span class="tag">Graph Neural Networks</span>
-        <span class="tag">NER</span><span class="tag">LLM Prompting</span><span class="tag">Data Visualization</span>
-    </p>
+<h2><span class="zh">发表论文</span><span class="en">Publications</span></h2>
+<ul class="pub-list">
+    <li>
+        <span class="title">How Misinformation Diffuses on Online Social Networks: Radical Opinions, Adaptive Relationship and Algorithmic Intervention</span><br>
+        <span class="author">Mengyi Zhang, Qingxing Dong, <b>Xiaozhen Wu</b></span><br>
+        <span class="periodical"><em>IEEE Transactions on Computational Social Systems</em> (SCI Q1), 2025</span><br>
+        <details>
+            <summary><span class="zh">摘要</span><span class="en">Abstract</span></summary>
+            <div class="zh"><p>构建了一个动态模型，刻画算法干预下用户错误信息信念与社会关系的协同演化过程。引入同化节点与排斥节点，分析其在观点演化中的作用。整合五种推荐算法（基于内容、基于用户、基于关系、基于热度及定时推送）模拟信息分发机制。在 Python 中进行重复实验，分析推荐比例、算法类型、节点类型和重连规则对观点极化与调和的影响。</p></div>
+            <div class="en"><p>Designed a dynamic model to capture the co-evolution of users' misinformation beliefs and social relationships under algorithmic interventions. Introduced assimilating and repelling nodes to analyze their roles in opinion evolution. Integrated five recommendation algorithms (content-based, user-based, relationship-based, popularity-based, and scheduled) to simulate information distribution mechanisms. Conducted repeated experiments in Python to analyze recommendation ratios, algorithms, node types, and rewiring rules on opinion polarization and moderation.</p></div>
+        </details>
+    </li>
+    <li>
+        <span class="title"><a href="https://arxiv.org/abs/2407.01213">EMIF: Evidence-aware Multi-source Information Fusion Network for Explainable Fake News Detection</a></span><br>
+        <span class="author">Qingxing Dong, Mengyi Zhang, Shiyuan Wu, <b>Xiaozhen Wu</b></span><br>
+        <span class="periodical">arXiv:2407.01213, 2024</span><br>
+        <details>
+            <summary><span class="zh">摘要</span><span class="en">Abstract</span></summary>
+            <div class="zh"><p>提出一种证据感知的多源信息融合网络（EMIF），用于可解释的虚假新闻检测，联合利用用户评论与相关新闻文章。设计了协同注意力网络以捕获评论与新闻之间的语义冲突，设计了分歧选择模块以识别与原始新闻差异最大的 Top-K 相关文章，并提出不一致性损失函数以增强跨源证据一致性。在 FibVID 数据集上展示了强大的鲁棒性，即使在单一信息源不足的情况下也能保持良好性能。</p></div>
+            <div class="en"><p>Proposed an Evidence-aware Multi-source Information Fusion (EMIF) network for explainable fake news detection that jointly leverages user comments and related news articles. Designed a co-attention network to capture semantic conflicts between comments and news, a divergence selection module to identify top-K divergent related articles, and an inconsistency loss to strengthen cross-source evidence consistency. Demonstrated strong robustness on the FibVID dataset even when one information source is insufficient.</p></div>
+        </details>
+    </li>
+</ul>
 
-    <h2>Reading Notes &amp; Code</h2>
-    <ul class="notes-list">
-        <li>
-            <span class="title"><a href="https://github.com/wxzher/Note-for-Mathematics">Mathematics Notes</a></span>
-            <span class="tag">PDF</span><span class="tag">Python</span>
-            <p>Graduate coursework: Advanced Mathematics, Linear Algebra, Probability &amp; Statistics, Operations Research, Numerical Optimization — with homework and computational experiments (gradient descent, optimization methods comparison).</p>
-        </li>
-        <li>
-            <span class="title"><a href="https://github.com/wxzher/Note-for-Computational-Communication-Science">Computational Communication Science Notes</a></span>
-            <span class="tag">R</span><span class="tag">Python</span>
-            <p>Eight lectures: data cleaning, basic metrics, machine learning, neural networks, RNNs, and CNN image classification. R + Keras implementations.</p>
-        </li>
-        <li>
-            <span class="title"><a href="https://github.com/wxzher/Agent-Based-Modeling-Study-Group">Agent-Based Modeling Study Group</a></span>
-            <span class="tag">NetLogo</span><span class="tag">Python</span>
-            <p>Eight lectures on ABM: Life Game, Boids, SIR, wealth distribution, ODD protocol, pattern-oriented modeling, model analysis, and opinion dynamics.</p>
-        </li>
-        <li>
-            <span class="title"><a href="https://github.com/wxzher/NetLogo-Complex-Network-Modeling">NetLogo Complex Network Modeling</a></span>
-            <span class="tag">NetLogo</span>
-            <p>Swarma College course: epidemic models on networks, evolutionary game theory, Tit-for-Tat strategies.</p>
-        </li>
-        <li>
-            <span class="title"><a href="https://github.com/wxzher/Textbook-Code-Quantitative_Social_Science_An_Introduction-updating">Quantitative Social Science: Code Companion</a></span>
-            <span class="tag">R</span>
-            <p>Chapter-by-chapter R code for Imai's textbook: causality, measurement, prediction, discovery, probability, uncertainty.</p>
-        </li>
-        <li>
-            <span class="title"><a href="https://github.com/wxzher/python_bilibili_videos">Bilibili Video Data Collection</a></span>
-            <span class="tag">Python</span>
-            <p>Scripts for collecting and analyzing Bilibili video data.</p>
-        </li>
-    </ul>
+<h2><span class="zh">荣誉与奖项</span><span class="en">Honors & Awards</span></h2>
+<table class="award-table">
+    <tr><td>2025</td><td><b><span class="zh">国家一等奖</span><span class="en">National First Prize</span></b><span class="zh">，"华为杯"中国研究生数学建模竞赛</span><span class="en">, "Huawei Cup" China Graduate Mathematical Modeling Contest</span></td></tr>
+    <tr><td>2025</td><td><span class="zh">武汉大学一等学业奖学金（前 10%）</span><span class="en">First-Class Academic Scholarship, Wuhan University (top 10%)</span></td></tr>
+    <tr><td>2025</td><td><span class="zh">课外科技创新创业先进个人</span><span class="en">Advanced Individual in Extracurricular Sci-Tech Innovation & Entrepreneurship</span></td></tr>
+    <tr><td>2024</td><td><span class="zh">武汉大学优秀新生奖学金</span><span class="en">Outstanding New Student Scholarship, Wuhan University</span></td></tr>
+    <tr><td>2024–2025</td><td><span class="zh">体育道德风尚奖，乒乓球 — 校级锦标赛（4 次）</span><span class="en">Sportsmanship Award, Table Tennis — University Tournaments (4 events)</span></td></tr>
+    <tr><td>2023</td><td><b><span class="zh">省级一等奖</span><span class="en">Provincial First Prize</span></b><span class="zh">，蓝桥杯 Web 应用开发</span><span class="en">, Lanqiao Cup Web Application Development</span></td></tr>
+    <tr><td>2023</td><td><span class="zh">省级一等奖，中国大学生计算机设计大赛</span><span class="en">Provincial First Prize, China College Computer Design Contest</span></td></tr>
+    <tr><td>2020–2023</td><td><span class="zh">国家励志奖学金（×2）与三等学业奖学金（×3）</span><span class="en">National Endeavor Scholarship (×2) &amp; Third-Class Academic Scholarship (×3)</span></td></tr>
+</table>
 
-    <h2>Blog</h2>
-    <p>Notes on computational social science methods, ABM tutorials, and mathematical optimization. <a href="blog/index.html">All posts →</a></p>
+<h2><span class="zh">技能</span><span class="en">Skills</span></h2>
+<p>
+    <span class="tag">Python</span><span class="tag">R</span><span class="tag">SQL</span><span class="tag">MATLAB</span>
+    <span class="tag">NetLogo</span><span class="tag">ABM</span><span class="tag">SIR/MSEIR</span>
+    <span class="tag">Bi-LSTM-CRF</span><span class="tag"><span class="zh">迁移学习</span><span class="en">Transfer Learning</span></span><span class="tag"><span class="zh">多任务学习</span><span class="en">Multi-Task Learning</span></span>
+    <span class="tag">NetworkX</span><span class="tag"><span class="zh">图神经网络</span><span class="en">Graph Neural Networks</span></span>
+    <span class="tag">NER</span><span class="tag">LLM Prompting</span><span class="tag"><span class="zh">数据可视化</span><span class="en">Data Visualization</span></span>
+</p>
 
+<h2><span class="zh">阅读笔记与代码</span><span class="en">Reading Notes &amp; Code</span></h2>
+<ul class="notes-list">
+    <li>
+        <span class="title"><a href="https://github.com/wxzher/Note-for-Mathematics"><span class="zh">数学笔记</span><span class="en">Mathematics Notes</span></a></span>
+        <span class="tag">PDF</span><span class="tag">Python</span>
+        <div class="zh"><p>研究生课程：高等数学、线性代数、概率统计、运筹学、数值最优化——含作业与计算实验（梯度下降、优化方法对比）。</p></div>
+        <div class="en"><p>Graduate coursework: Advanced Mathematics, Linear Algebra, Probability &amp; Statistics, Operations Research, Numerical Optimization — with homework and computational experiments (gradient descent, optimization methods comparison).</p></div>
+    </li>
+    <li>
+        <span class="title"><a href="https://github.com/wxzher/Note-for-Computational-Communication-Science"><span class="zh">计算传播学笔记</span><span class="en">Computational Communication Science Notes</span></a></span>
+        <span class="tag">R</span><span class="tag">Python</span>
+        <div class="zh"><p>八讲内容：数据清洗、基础指标、机器学习、神经网络、RNN 与 CNN 图像分类。R + Keras 实现。</p></div>
+        <div class="en"><p>Eight lectures: data cleaning, basic metrics, machine learning, neural networks, RNNs, and CNN image classification. R + Keras implementations.</p></div>
+    </li>
+    <li>
+        <span class="title"><a href="https://github.com/wxzher/Agent-Based-Modeling-Study-Group"><span class="zh">智能体建模学习小组</span><span class="en">Agent-Based Modeling Study Group</span></a></span>
+        <span class="tag">NetLogo</span><span class="tag">Python</span>
+        <div class="zh"><p>八讲 ABM：生命游戏、Boids、SIR、财富分配、ODD 协议、模式导向建模、模型分析与观点动力学。</p></div>
+        <div class="en"><p>Eight lectures on ABM: Life Game, Boids, SIR, wealth distribution, ODD protocol, pattern-oriented modeling, model analysis, and opinion dynamics.</p></div>
+    </li>
+    <li>
+        <span class="title"><a href="https://github.com/wxzher/NetLogo-Complex-Network-Modeling"><span class="zh">NetLogo 复杂网络建模</span><span class="en">NetLogo Complex Network Modeling</span></a></span>
+        <span class="tag">NetLogo</span>
+        <div class="zh"><p>集智俱乐部课程：网络上的流行病模型、演化博弈论、Tit-for-Tat 策略。</p></div>
+        <div class="en"><p>Swarma College course: epidemic models on networks, evolutionary game theory, Tit-for-Tat strategies.</p></div>
+    </li>
+    <li>
+        <span class="title"><a href="https://github.com/wxzher/Textbook-Code-Quantitative_Social_Science_An_Introduction-updating"><span class="zh">《量化社会科学导论》代码配套</span><span class="en">Quantitative Social Science: Code Companion</span></a></span>
+        <span class="tag">R</span>
+        <div class="zh"><p>Imai 教材逐章 R 代码：因果推断、测量、预测、发现、概率、不确定性。</p></div>
+        <div class="en"><p>Chapter-by-chapter R code for Imai's textbook: causality, measurement, prediction, discovery, probability, uncertainty.</p></div>
+    </li>
+    <li>
+        <span class="title"><a href="https://github.com/wxzher/python_bilibili_videos"><span class="zh">Bilibili 视频数据采集</span><span class="en">Bilibili Video Data Collection</span></a></span>
+        <span class="tag">Python</span>
+        <div class="zh"><p>Bilibili 视频数据采集与分析脚本。</p></div>
+        <div class="en"><p>Scripts for collecting and analyzing Bilibili video data.</p></div>
+    </li>
+</ul>
+
+<h2>Blog</h2>
+<div class="zh"><p>多智能体强化学习、计算社会科学方法、ABM 教程与数学优化笔记。<a href="blog/index.html">全部文章 →</a></p></div>
+<div class="en"><p>Notes on multi-agent reinforcement learning, computational social science methods, ABM tutorials, and mathematical optimization. <a href="blog/index.html">All posts →</a></p></div>
+
+<script>
+function switchLang(lang) {
+    localStorage.setItem('lang', lang);
+    applyLang(lang);
+}
+
+function applyLang(lang) {
+    var show = lang === 'zh' ? '.zh' : '.en';
+    var hide = lang === 'zh' ? '.en' : '.zh';
+    document.querySelectorAll(show).forEach(function(el) { el.style.display = ''; });
+    document.querySelectorAll(hide).forEach(function(el) { el.style.display = 'none'; });
+    document.getElementById('btn-zh').classList.toggle('active', lang === 'zh');
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+}
+
+// Default to Chinese
+applyLang(localStorage.getItem('lang') || 'zh');
+</script>
 
 </body>
 </html>
